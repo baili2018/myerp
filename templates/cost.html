@@ -1,0 +1,83 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+
+<table class="table">
+  <caption>基本的表格布局</caption>
+  <thead>
+    <tr>
+        <th>序号</th>
+        <th>创建日期</th>
+        <th>一级科目</th>
+        <th>二级科目</th>
+        <th>三级科目</th>
+        <th>摘要</th>
+        <th>发生金额</th>
+        <th>借贷方向</th>
+        <th>当前余额</th>
+        <th>结算账号</th>
+        <th>经办人</th>
+        <th>是否结算</th>
+        <th>结算日期</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for foo in clist %}
+    <tr>
+        <td>{{ foo.c_id }}</td>
+        <td>{{ foo.create_date|date:'c' }}</td>
+        <td>{{ foo.C1 }}</td>
+        <td>{{ foo.C2 }}</td>
+        <td>{{ foo.C3 }}</td>
+        <td>{{ foo.summary }}</td>
+        <td>{{ foo.Amount }}</td>
+        <td>{{ foo.BorL }}</td>
+        <td>{{ foo.Balance }}</td>
+        <td>{{ foo.Account_number }}</td>
+        <td>{{ foo.Manager }}</td>
+        <td>{{ foo.Settlement }}</td>
+        <td>{{ foo.S_date|date:'Y-m-d'|default_if_none:' ' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li>
+        {% if clist.has_previous %}
+      <a href="?page={{ clist.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;上一页</span>
+      </a>
+        {% endif %}
+    </li>
+      <li>当前页{{ clist.number }} of {{ clist.paginator.num_pages }}</li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li>
+        {% if clist.has_next %}
+      <a href="?page={{ clist.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">下一页&raquo;</span>
+      </a>
+        {% endif %}
+    </li>
+  </ul>
+</nav>
+</body>
+</html>
