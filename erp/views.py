@@ -62,3 +62,6 @@ def tracking(request):
     result = tracker.trackingmore(requestData, urlStr, "codeNumberGet")
     print(result)
     return result
+
+def index(request):
+    return render(request, 'base.html',)
