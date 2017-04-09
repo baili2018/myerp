@@ -5,7 +5,6 @@ from erp.models import *
 from erp.forms import *
 from erp import trackingmoreclass
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
-
 # Create your views here.
 
 
@@ -64,4 +63,6 @@ def tracking(request):
     return result
 
 def index(request):
-    return render(request, 'base.html',)
+    return render(request, 'index.html',)
+def index3(request):
+    return render(request, 'index_v3.html',)

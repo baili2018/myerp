@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^cost/$', views.cost_list, name='costlist'),
     url(r'^cost/add/$', views.cost_add, name='costadd'),
-    url(r'^index/$', views.index, name='index'),
+    url(r'^$', views.index, name='index'),
+    url(r'^index?v=3$', views.index3, name='index3'),
 ]
