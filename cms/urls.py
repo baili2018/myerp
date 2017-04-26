@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^cost/add/$', views.cost_add, name='costadd'),
     url(r'^$', views.index, name='index'),
     url(r'^index?v=3$', views.index3, name='index3'),
+    url(r'^tem/$', views.tem, name='tem'),
 ]

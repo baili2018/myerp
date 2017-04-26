@@ -54,15 +54,13 @@ def cost_add(request):
 #     return render(request, 'cost_add.html', locals())
 
 
-def tracking(request):
-    tracker = trackingmoreclass.track
-    urlStr = "/china-ems/LT873137721CN"
-    requestData = 'LT873137721CN'
-    result = tracker.trackingmore(requestData, urlStr, "codeNumberGet")
-    print(result)
-    return result
-
 def index(request):
     return render(request, 'index.html',)
+
 def index3(request):
     return render(request, 'index_v3.html',)
+
+def tem(request):
+    if request.method == 'POST':
+        q = request.POST.get('sku')
+    return render(request, 'tem.html', locals())

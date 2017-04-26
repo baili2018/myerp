@@ -16,8 +16,7 @@
 </head>
 <body>
 
-<table class="table">
-  <caption>基本的表格布局</caption>
+<table class="table table table-hover table-condensed">
   <thead>
     <tr>
         <th>序号</th>
@@ -39,7 +38,7 @@
     {% for foo in clist %}
     <tr>
         <td>{{ foo.c_id }}</td>
-        <td>{{ foo.create_date|date:'c' }}</td>
+        <td>{{ foo.create_date|date:'Y-m-d' }}</td>
         <td>{{ foo.C1 }}</td>
         <td>{{ foo.C2 }}</td>
         <td>{{ foo.C3 }}</td>
@@ -59,24 +58,25 @@
   <ul class="pagination">
     <li>
         {% if clist.has_previous %}
-      <a href="?page={{ clist.previous_page_number }}" aria-label="Previous">
-        <span aria-hidden="true">&laquo;上一页</span>
-      </a>
+          <a href="?page={{ clist.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;上一页</span>
+          </a>
         {% endif %}
     </li>
-      <li>当前页{{ clist.number }} of {{ clist.paginator.num_pages }}</li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
+
+    <li><a href="?page=1">1</a></li>
+    <li><a href="?page=2">2</a></li>
+    <li><a href="?page=3">3</a></li>
+    <li><span>...</span></li>
+    <li><a href="?page={{ clist.paginator.num_pages }}">{{ clist.paginator.num_pages }}</a></li>
     <li>
         {% if clist.has_next %}
-      <a href="?page={{ clist.next_page_number }}" aria-label="Next">
-        <span aria-hidden="true">下一页&raquo;</span>
-      </a>
+          <a href="?page={{ clist.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">下一页&raquo;</span>
+          </a>
         {% endif %}
     </li>
+    <li><span>当前页{{ clist.number }} of {{ clist.paginator.num_pages }}</span></li>
   </ul>
 </nav>
 </body>
