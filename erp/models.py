@@ -2,6 +2,7 @@ from django.db import models
 import django.utils.timezone
 import datetime
 import time
+from PIL import Image
 
 # Create your models here.
 
@@ -67,6 +68,93 @@ class UPC(models.Model):
     U_date = models.DateTimeField('使用时间', null=True, blank=True)
     sku = models.CharField('对应SKU', max_length=200, null=True, default='', blank=True)
     Asin = models.CharField('对应ASIN', max_length=12, null=True, default='', blank=True)
+
+class IMG(models.Model):
+    img_path = models.ImageField('图片路径', upload_to='Pimgage')
+    img_name = models.CharField('图片名称', max_length=50)
+
+class Photo(models.Model):
+    now = str(time.time())
+    filepath = 'pimage/' + now + '/'
+    photo_org = models.FileField('Photo', upload_to=filepath)
+    photo_small = models.CharField('Small', max_length=255)
+
+    def save(self):
+        super(Photo, self).save()
+        photopath = str(self.photo_org.path)
+        im = Image.open(photopath)
+        width, height = im.size
+
+        small_srcoll_num = 0.4
+        small_width = width * small_srcoll_num
+        small_height = height * small_srcoll_num
+        extension = photopath.rsplit('.', 1)[1]
+        filename = photopath.rsplit('/', 1)[1].rsplit('.', 1)[0]
+        fullpath = photopath.rsplit('/', 1)[0]
+
+        im.thumbnail((small_width, small_height), Image.ANTIALIAS)
+        small_name = filename + '_small.' + extension
+        now_path = fullpath + '/' + small_name
+
+        if im.mode != 'RGB':
+            im.mode = 'RGB'
+
+        im.save(now_path)
+        self.photo_small = self.filepath + small_name
+
+        super(Photo, self).save()
+
+
+#定义产品库表
+class Product(models.Model):
+    pid = models.CharField('产品ID', max_length=4, primary_key=True)
+    name = models.CharField('产品名称', max_length=255)
+    p_c1 = models.CharField('一级分类', max_length=255)
+    p_c2 = models.CharField('二级分类', max_length=255)
+    p_c3 = models.CharField('三级分类', max_length=255)
+    p_img = models.ImageField('产品图片', upload_to='/media/', null=True)
+    P_size = models.CharField('尺码', max_length=255, )
+    P_color = models.CharField('颜色', max_length=255, )
+    p_price = models.DecimalField('成本价', max_digits=10, decimal_places=2)
+    p_discount = models.DecimalField('折扣', max_digits=10, decimal_places=2)
+
+
+#定义尺码表
+class Size(models.Model):
+    Size_name = models.CharField('尺码', max_length=255, primary_key=True)
+    Ext_name_1 = models.CharField('尺码别名', max_length=255, null=True)
+
+#定义颜色表
+class Color(models.Model):
+    color_name = models.CharField('颜色', max_length=30, primary_key=True)
+    color_name_cn = models.CharField('中文', max_length=100)
+
+#产品图片
+class P_image(models.Model):
+    img_id = models.ForeignKey(Product)
+    path = 'product_image/'+ str(time.time())+ '/'
+    image_org = models.ImageField('原图', upload_to=path)
+    image_big = models.ImageField('大图', max_length=255)
+    image_128_128 = models.ImageField('中图', max_length=255)
+    image_64_64 = models.ImageField('小图', max_length=255)
+
+#定义产品扩展表
+class Product_ext(models.Model):
+    ex_pid = models.ForeignKey(Product)
+    supplier = models.CharField('供应商', max_length=255)
+    Item_number = models.CharField('货号', max_length=255)
+    Product_source = models.URLField('采购链接', max_length=255)
+    supplier_code = models.CharField('供应商条码', max_length=255)
+    ext_size_us = models.CharField('US码', max_length=255)
+
+#定义产品库存表
+
+
+#定义产品出入库表
+
+
+
+
 
 # class Tem(models.Model):
 #     item_sku = models.CharField('SKU', max_length=255, primary_key=True)

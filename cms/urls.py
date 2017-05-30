@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from erp import views
+from django.conf.urls.static import static
+from cms import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,4 +26,5 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^index?v=3$', views.index3, name='index3'),
     url(r'^tem/$', views.tem, name='tem'),
-]
+    url(r'^product/$', views.product, name='product'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

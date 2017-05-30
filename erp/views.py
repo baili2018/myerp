@@ -5,6 +5,7 @@ from erp.models import *
 from erp.forms import *
 from erp import trackingmoreclass
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
+from PIL import Image
 # Create your views here.
 
 
@@ -64,3 +65,28 @@ def tem(request):
     if request.method == 'POST':
         q = request.POST.get('sku')
     return render(request, 'tem.html', locals())
+
+
+def showimage(request):
+    imgs = Photo.objects.all()
+    return render(request, 'show.html', locals())
+
+def upload(request):
+    if request.method == "POST":
+        img = request.FILES.get('img')
+        photo = Photo()
+        photo.photo_org = img
+        photo.save()
+        return HttpResponseRedirect('/show/')
+    else:
+        return render(request, 'uploadimg.html')
+
+def product(request):
+    product_list = Product.objects.all()
+    paginator = Paginator(product_list, 25)
+    try:
+        page = int(request.GET.get('page', 1))
+        Plist = paginator.page(page)
+    except PageNotAnInteger:
+        Plist = paginator.page(paginator.num_pages)
+    return render(request, 'plist.html', locals())
